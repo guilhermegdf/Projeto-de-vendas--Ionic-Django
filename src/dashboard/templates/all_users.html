@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+{% csrf_token %}
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+      {% if users %}
+        Tabela usuários
+      {% else %}
+        Tabela pedidos
+      {% endif %}
+        <small>advanced tables</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                {% if users %}
+                <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Tipo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, value in users.items %}
+                  <tr>
+                  <td>{{value.name}}</td>
+                  <td>{{value.email}}</td>
+                  <td>{{value.type}}</td>
+                  <td><button type="button" onclick="location.href='{% url 'infouser' id=key %}'" class="btn btn-warning">Options</button></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                </tfoot>
+                {% else %}
+                <thead>
+                <tr>
+                  <th>Vendedor</th>
+                  <th>Total</th>
+                  <th>Código</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, user in order.items %}
+                {% if 'vendas' in user %}
+                {% for key, value in user.vendas.items %}
+                  <tr>
+                  <td>{{user.details.name}}</td>
+                  <td>{{value.total}}</td>
+                  <td>{{key}}</td>
+                  <td><button type="button" onclick="location.href='{% url 'inforder' id=key %}'" class="btn btn-warning">Options</button></td>
+                  </tr>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                </tfoot>
+                {% endif %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock content %}
